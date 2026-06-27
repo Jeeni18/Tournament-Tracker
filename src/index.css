@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --navy:  #071A3D;
+  --navy2: #0E2A5A;
+  --gold:  #D4AF37;
+}
+
+body {
+  background-color: #071A3D;
+  color: #1E293B;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root { min-height: 100vh; }
+
+/* ── White Cards ────────────────────────────────────────── */
+
+.glass-card {
+  background: transparent;
+  border-radius: 16px;
+  box-shadow: 0 0 32px 6px rgba(212,175,55,0.18), 0 0 80px 16px rgba(212,175,55,0.08);
+  border: 1px solid rgba(212,175,55,0.5);
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.20), 0 16px 48px rgba(0, 0, 0, 0.28);
+  border: 1px solid #E5E7EB;
+}
+
+.glass {
+  background: rgba(7, 26, 61, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── Match Card ─────────────────────────────────────────── */
+
+.match-card {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.5);
+  border-radius: 16px;
+  box-shadow: 0 0 32px 6px rgba(212,175,55,0.18), 0 0 80px 16px rgba(212,175,55,0.08);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.match-card:hover {
+  box-shadow: 0 0 40px 10px rgba(212,175,55,0.28), 0 0 100px 20px rgba(212,175,55,0.12);
+  border-color: rgba(212,175,55,0.8);
+  transform: translateY(-1px);
+}
+
+.match-card.completed {
+  border-left: 3px solid #86efac;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #0E2A5A; }
+::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 99px; opacity: 0.4; }
+::-webkit-scrollbar-thumb:hover { background: #C4A027; }
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Number inputs ──────────────────────────────────────── */
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { opacity: 1; }
+
+/* ── Chip ───────────────────────────────────────────────── */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+/* ── Hero Animations ────────────────────────────────────── */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(-0.5deg); }
+  50%       { transform: translateY(-18px) rotate(0.5deg); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes bounceSoft {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.trophy-float { animation: float 5s ease-in-out infinite; }
+
+.trophy-glow {
+  filter:
+    drop-shadow(0 0 35px rgba(212, 175, 55, 0.55))
+    drop-shadow(0 0 80px rgba(212, 175, 55, 0.25))
+    drop-shadow(0 28px 56px rgba(0, 0, 0, 0.50));
+}
+
+.animate-fade-in    { animation: fadeIn  0.3s ease forwards; }
+.animate-fade-up    { animation: fadeUp  0.7s ease forwards; }
+.animate-fade-up-d1 { animation: fadeUp  0.7s ease 0.15s both; }
+.animate-fade-up-d2 { animation: fadeUp  0.7s ease 0.30s both; }
+.animate-fade-up-d3 { animation: fadeUp  0.7s ease 0.50s both; }
+.scroll-bounce      { animation: bounceSoft 2.2s ease-in-out infinite; }
+
+/* ── Gold gradient text ─────────────────────────────────── */
+
+.gold-text {
+  background: linear-gradient(135deg, #FFD700 0%, #D4AF37 45%, #B8960A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Hero grid overlay ──────────────────────────────────── */
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ── Data table (inside white cards) ───────────────────── */
+
+.data-table thead th {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+/* ── Focus visible ──────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid rgba(212, 175, 55, 0.6);
+  outline-offset: 2px;
+  border-radius: 6px;
+}

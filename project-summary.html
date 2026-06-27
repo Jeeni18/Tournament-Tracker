@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fantasy World Cup 2026 — Project Summary</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #fff;
+      color: #1e293b;
+      font-size: 9.5pt;
+      line-height: 1.5;
+    }
+
+    @page {
+      size: A4;
+      margin: 14mm 16mm;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 10mm 0;
+    }
+
+    /* ── Header ─────────────────────────────────────────── */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      border-bottom: 2.5px solid #4f46e5;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+    }
+    .header-left h1 {
+      font-size: 20pt;
+      font-weight: 800;
+      color: #1e293b;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+    .header-left h1 span { color: #4f46e5; }
+    .header-left .subtitle {
+      font-size: 9pt;
+      color: #64748b;
+      margin-top: 3px;
+      font-weight: 500;
+    }
+    .header-right {
+      text-align: right;
+    }
+    .header-right .badge {
+      display: inline-block;
+      background: #4f46e5;
+      color: #fff;
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .header-right .meta {
+      font-size: 7.5pt;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    /* ── Grid layout ────────────────────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+
+    /* ── Section ────────────────────────────────────────── */
+    .section { margin-bottom: 12px; }
+    .section-title {
+      font-size: 6.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #4f46e5;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 3px;
+      margin-bottom: 7px;
+    }
+
+    /* ── Card ───────────────────────────────────────────── */
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      padding: 9px 11px;
+    }
+    .card h3 {
+      font-size: 9pt;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+    .card p, .card li { font-size: 8.5pt; color: #475569; }
+    .card ul { padding-left: 12px; }
+    .card ul li { margin-bottom: 2px; }
+
+    .card-accent {
+      border-left: 3px solid #4f46e5;
+      background: #f0f1ff;
+    }
+    .card-amber { border-left: 3px solid #f59e0b; background: #fffbeb; }
+    .card-green { border-left: 3px solid #10b981; background: #f0fdf4; }
+    .card-rose  { border-left: 3px solid #f43f5e; background: #fff1f2; }
+
+    /* ── Stat pills row ─────────────────────────────────── */
+    .stat-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .stat-pill {
+      flex: 1;
+      background: #4f46e5;
+      color: #fff;
+      border-radius: 8px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .stat-pill .num {
+      font-size: 16pt;
+      font-weight: 800;
+      line-height: 1;
+      display: block;
+    }
+    .stat-pill .lbl {
+      font-size: 6.5pt;
+      font-weight: 600;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+      display: block;
+    }
+    .stat-pill.light {
+      background: #f1f5f9;
+      color: #334155;
+    }
+    .stat-pill.light .lbl { opacity: 0.6; }
+
+    /* ── Table ──────────────────────────────────────────── */
+    table { width: 100%; border-collapse: collapse; font-size: 8pt; }
+    th {
+      background: #f1f5f9;
+      color: #64748b;
+      font-weight: 700;
+      font-size: 7pt;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 5px 8px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    td {
+      padding: 5px 8px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #fafafa; }
+    .center { text-align: center; }
+    .bold { font-weight: 700; color: #1e293b; }
+    .indigo { color: #4f46e5; font-weight: 700; }
+    .amber  { color: #d97706; font-weight: 700; }
+    .green  { color: #059669; font-weight: 700; }
+
+    /* ── Tag chips ──────────────────────────────────────── */
+    .tag {
+      display: inline-block;
+      font-size: 7pt;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin: 1px;
+    }
+    .tag-blue   { background: #dbeafe; color: #1d4ed8; }
+    .tag-indigo { background: #e0e7ff; color: #4338ca; }
+    .tag-green  { background: #d1fae5; color: #065f46; }
+    .tag-amber  { background: #fef3c7; color: #92400e; }
+    .tag-rose   { background: #ffe4e6; color: #9f1239; }
+    .tag-violet { background: #ede9fe; color: #5b21b6; }
+    .tag-pink   { background: #fce7f3; color: #9d174d; }
+
+    /* ── Points formula box ─────────────────────────────── */
+    .formula {
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: 7px;
+      padding: 8px 12px;
+      font-size: 8pt;
+      font-family: 'Courier New', monospace;
+      margin-top: 5px;
+    }
+    .formula .hi { color: #818cf8; font-weight: 700; }
+    .formula .hi2 { color: #34d399; font-weight: 700; }
+    .formula .hi3 { color: #fbbf24; font-weight: 700; }
+
+    /* ── Two-col text list ──────────────────────────────── */
+    .two-col-list {
+      columns: 2;
+      column-gap: 14px;
+    }
+    .two-col-list li { break-inside: avoid; margin-bottom: 2px; }
+
+    /* ── Footer ─────────────────────────────────────────── */
+    .footer {
+      border-top: 1px solid #e2e8f0;
+      margin-top: 10px;
+      padding-top: 7px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 7pt;
+      color: #94a3b8;
+    }
+    .footer strong { color: #64748b; }
+
+    /* Print */
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <div class="header-left">
+      <h1>Fantasy World Cup <span>2026</span></h1>
+      <div class="subtitle">Private Tournament Tracker · 8 Owners · 48 Teams · Group Stage + Full Knockout Bracket</div>
+    </div>
+    <div class="header-right">
+      <span class="badge">Project Summary</span>
+      <div class="meta">FIFA World Cup 2026 · June 12 – July 20</div>
+    </div>
+  </div>
+
+  <!-- ── STAT PILLS ── -->
+  <div class="stat-row">
+    <div class="stat-pill"><span class="num">48</span><span class="lbl">Teams</span></div>
+    <div class="stat-pill"><span class="num">8</span><span class="lbl">Owners</span></div>
+    <div class="stat-pill"><span class="num">72</span><span class="lbl">Group Matches</span></div>
+    <div class="stat-pill"><span class="num">62</span><span class="lbl">Bracket Slots</span></div>
+    <div class="stat-pill light"><span class="num">6</span><span class="lbl">Pots</span></div>
+    <div class="stat-pill light"><span class="num">12</span><span class="lbl">Groups (A–L)</span></div>
+  </div>
+
+  <!-- ── ROW 1: Overview + Owners ── -->
+  <div class="grid-2">
+    <div>
+      <div class="section-title">Overview</div>
+      <div class="card card-accent">
+        <h3>What is this?</h3>
+        <p>A private fantasy tournament tracker built for 8 friends to compete across the 2026 FIFA World Cup. Each owner is randomly assigned 6 teams from a pot-based draft. Points accumulate from match results and knockout round advancement throughout the tournament.</p>
+      </div>
+      <div style="margin-top:8px;" class="card">
+        <h3>Tech Stack</h3>
+        <p style="margin-bottom:4px;">
+          <span class="tag tag-blue">React 18</span>
+          <span class="tag tag-indigo">TypeScript</span>
+          <span class="tag tag-green">Supabase</span>
+          <span class="tag tag-amber">TanStack Query</span>
+          <span class="tag tag-violet">Tailwind CSS</span>
+          <span class="tag tag-rose">Vite</span>
+        </p>
+        <p>All stats are computed client-side in real time from raw match data stored in Supabase — no server-side recalculation needed. Admins enter scores through the web UI; standings update instantly.</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">Owners &amp; Teams</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Owner</th>
+            <th>Teams (sample)</th>
+            <th class="center">Teams</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="bold">Achal</td>  <td>Spain, Morocco, Turkiye, Cote d'Ivoire…</td>   <td class="center">6</td></tr>
+          <tr><td class="bold">Aditya</td> <td>France, Belgium, USA, Algeria…</td>              <td class="center">6</td></tr>
+          <tr><td class="bold">Arun</td>   <td>Brazil, Croatia, Mexico, Paraguay…</td>          <td class="center">6</td></tr>
+          <tr><td class="bold">Ashwin</td> <td>England, Japan, Norway, Canada…</td>             <td class="center">6</td></tr>
+          <tr><td class="bold">Bikash</td> <td>Argentina, Switzerland, Ecuador…</td>            <td class="center">6</td></tr>
+          <tr><td class="bold">Bimal</td>  <td>Netherlands, Uruguay, Austria, Iraq…</td>        <td class="center">6</td></tr>
+          <tr><td class="bold">Biplav</td> <td>Portugal, Senegal, Iran, Sweden…</td>            <td class="center">6</td></tr>
+          <tr><td class="bold">Bishal</td> <td>Germany, Colombia, Australia…</td>               <td class="center">6</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── ROW 2: Points System ── -->
+  <div class="section-title">Points Scoring System</div>
+  <div class="grid-3" style="margin-bottom:12px;">
+    <div class="card card-accent">
+      <h3>Match Points (Group &amp; Knockout)</h3>
+      <ul>
+        <li><strong>Win (90 min):</strong> 3 pts</li>
+        <li><strong>Win (AET/Pen):</strong> 2 pts</li>
+        <li><strong>Loss (AET/Pen):</strong> 1 pt</li>
+        <li><strong>Loss (90 min):</strong> 0 pts</li>
+        <li><strong>Draw (group):</strong> 1 pt each</li>
+        <li><strong>Goals:</strong> +0.1 per goal scored</li>
+      </ul>
+    </div>
+    <div class="card card-amber">
+      <h3>Pot Difference Multiplier</h3>
+      <p style="margin-bottom:5px;">Lower-ranked team receives a multiplier on their match points (base + goals) when beating a higher-ranked team:</p>
+      <ul>
+        <li>1 pot difference → <strong>×1.2</strong></li>
+        <li>2 pot difference → <strong>×1.4</strong></li>
+        <li>3 pot difference → <strong>×1.6</strong></li>
+        <li>4 pot difference → <strong>×1.8</strong></li>
+        <li>5 pot difference → <strong>×2.0</strong></li>
+      </ul>
+    </div>
+    <div class="card card-green">
+      <h3>Round Points (Knockout)</h3>
+      <p style="margin-bottom:5px;">Admin manually ticks each round a team reaches. Each tick = <strong>+1 Round Point</strong>:</p>
+      <ul>
+        <li>Round of 32 → <strong>1 pt</strong></li>
+        <li>Round of 16 → <strong>2 pts</strong> total</li>
+        <li>Quarterfinals → <strong>3 pts</strong> total</li>
+        <li>Semifinals → <strong>4 pts</strong> total</li>
+        <li>Final → <strong>5 pts</strong> total</li>
+        <li>Winner → <strong>6 pts</strong> total</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="formula">
+    <span class="hi">Total Points</span> = <span class="hi2">Match Points</span> + <span class="hi3">Round Points</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    Ranking: <span class="hi">Total Pts</span> → Goal Difference → Goals Scored
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <em>Example: Pot 6 beats Pot 3 → (3 + 0.1) × 1.6 = <span class="hi">4.96 pts</span></em>
+  </div>
+
+  <!-- ── ROW 3: Features ── -->
+  <div style="margin-top:12px;" class="grid-2">
+    <div>
+      <div class="section-title">Key Features</div>
+      <div class="card">
+        <ul class="two-col-list">
+          <li>📅 Group stage fixture calendar with date/group filters</li>
+          <li>📊 Live team standings (Match + Round + Total Pts)</li>
+          <li>👑 Owner leaderboard with per-team breakdown</li>
+          <li>🔢 62-slot knockout bracket (5 rounds)</li>
+          <li>⚙️ Admin: enter scores, tick round attributes</li>
+          <li>🔍 Search teams, owners, venues</li>
+          <li>🏆 Team detail page with full match history</li>
+          <li>👤 Owner detail page with all teams &amp; results</li>
+          <li>🔐 Admin login (hardcoded credentials, 2 admins)</li>
+          <li>📱 Fully responsive — mobile &amp; desktop</li>
+          <li>⚡ Real-time updates via React Query invalidation</li>
+          <li>🎯 Pot-based multiplier calculated automatically</li>
+        </ul>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">Bracket Structure</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th class="center">Slots</th>
+            <th>Schedule</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="bold">Round of 32</td> <td class="center indigo">1–32</td>  <td>Jun 29 – Jul 4, 2026</td></tr>
+          <tr><td class="bold">Round of 16</td> <td class="center indigo">33–48</td> <td>Jul 4–8, 2026</td></tr>
+          <tr><td class="bold">Quarterfinals</td><td class="center indigo">49–56</td><td>Jul 10–12, 2026</td></tr>
+          <tr><td class="bold">Semifinals</td>   <td class="center indigo">57–60</td><td>Jul 15–16, 2026</td></tr>
+          <tr><td class="bold">Final</td>         <td class="center indigo">61–62</td><td>Jul 20, 2026</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;" class="card card-rose">
+        <h3>Admin Workflow</h3>
+        <p>1. Sign in → 2. Enter match scores on Fixtures or Bracket page → 3. After knockout draw, tick round attributes per team in "Manage" tab → 4. Assign teams to bracket slots → standings &amp; rankings update live.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer">
+    <div><strong>Fantasy World Cup 2026</strong> · Private tracker for 8 owners · Built with React + TypeScript + Supabase</div>
+    <div>Tournament: Jun 12 – Jul 20, 2026 &nbsp;·&nbsp; 48 teams across 6 pots &amp; 12 groups</div>
+  </div>
+
+</div>
+</body>
+</html>
