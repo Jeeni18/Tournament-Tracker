@@ -30,7 +30,7 @@ export function useSaveKnockoutScore() {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: ({
-      matchId, homeTeamId, awayTeamId, homeScore, awayScore, extraTime, completed,
+      matchId, homeTeamId, awayTeamId, homeScore, awayScore, extraTime, penaltyWinner, completed,
     }: {
       matchId: string
       homeTeamId: string | null
@@ -38,8 +38,9 @@ export function useSaveKnockoutScore() {
       homeScore: number
       awayScore: number
       extraTime: boolean
+      penaltyWinner: 'home' | 'away' | null
       completed: boolean
-    }) => saveKnockoutScore(matchId, homeTeamId, awayTeamId, homeScore, awayScore, extraTime, completed),
+    }) => saveKnockoutScore(matchId, homeTeamId, awayTeamId, homeScore, awayScore, extraTime, penaltyWinner, completed),
     onSuccess: () => qc.invalidateQueries(),
   })
 }

@@ -112,6 +112,7 @@ export async function saveKnockoutScore(
   homeScore: number,
   awayScore: number,
   extraTimeOrPenalties: boolean,
+  penaltyWinner: 'home' | 'away' | null,
   completed: boolean
 ): Promise<void> {
   const { error } = await supabase
@@ -122,6 +123,7 @@ export async function saveKnockoutScore(
       home_score: homeScore,
       away_score: awayScore,
       extra_time_or_penalties: extraTimeOrPenalties,
+      penalty_winner: penaltyWinner,
       completed,
     })
     .eq('id', matchId)

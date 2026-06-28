@@ -114,6 +114,7 @@ export interface Match {
   home_score: number | null
   away_score: number | null
   extra_time_or_penalties: boolean
+  penalty_winner: 'home' | 'away' | null
   completed: boolean
   slot_number: number | null
   created_at: string

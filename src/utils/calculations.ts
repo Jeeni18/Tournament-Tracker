@@ -63,7 +63,8 @@ export function calculateKnockoutMatchPoints(
   awayScore: number,
   homePot: number,
   awayPot: number,
-  extraTimeOrPenalties: boolean
+  extraTimeOrPenalties: boolean,
+  penaltyWinner: 'home' | 'away' | null = null
 ): MatchPoints {
   const potDiff = Math.abs(homePot - awayPot)
   const multiplier = potDiff > 0 ? getPotMultiplier(potDiff) : 1.0
@@ -72,7 +73,11 @@ export function calculateKnockoutMatchPoints(
   let homeBase = 0
   let awayBase = 0
 
-  if (homeScore > awayScore) {
+  if (extraTimeOrPenalties && homeScore === awayScore && penaltyWinner) {
+    // Penalty shootout: scores tied after ET, winner determined by pens
+    homeBase = penaltyWinner === 'home' ? 2 : 1
+    awayBase = penaltyWinner === 'away' ? 2 : 1
+  } else if (homeScore > awayScore) {
     homeBase = extraTimeOrPenalties ? 2 : 3
     awayBase = extraTimeOrPenalties ? 1 : 0
   } else if (homeScore < awayScore) {

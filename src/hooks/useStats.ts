@@ -79,7 +79,7 @@ export function useComputedStats() {
       const isGroup = m.stage === 'group'
       const { homePoints, awayPoints } = isGroup
         ? calculateGroupMatchPoints(m.home_score, m.away_score, home.pot_number, away.pot_number)
-        : calculateKnockoutMatchPoints(m.home_score, m.away_score, home.pot_number, away.pot_number, m.extra_time_or_penalties)
+        : calculateKnockoutMatchPoints(m.home_score, m.away_score, home.pot_number, away.pot_number, m.extra_time_or_penalties, m.penalty_winner ?? null)
 
       const h = statsMap.get(home.id)
       if (h) {

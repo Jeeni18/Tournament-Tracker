@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Check, MapPin } from 'lucide-react'
 import type { Match, Team } from '../types'
 import { useAuth } from '../context/AuthContext'
@@ -81,27 +81,50 @@ function SlotSide({
 export default function KnockoutMatchCard({ match, homeTeam, awayTeam }: Props) {
   const { role } = useAuth()
   const saveScore = useSaveKnockoutScore()
-  const [homeInput, setHomeInput] = useState(match.home_score?.toString() ?? '')
-  const [awayInput, setAwayInput] = useState(match.away_score?.toString() ?? '')
-  const [extraTime, setExtraTime] = useState(match.extra_time_or_penalties)
-  const [saving, setSaving] = useState(false)
+
+  const [homeInput,     setHomeInput]     = useState(match.home_score?.toString() ?? '')
+  const [awayInput,     setAwayInput]     = useState(match.away_score?.toString() ?? '')
+  const [extraTime,     setExtraTime]     = useState(match.extra_time_or_penalties)
+  const [penaltyWinner, setPenaltyWinner] = useState<'home' | 'away' | null>(match.penalty_winner ?? null)
+  const [saving,        setSaving]        = useState(false)
+
+  // Sync inputs when match data refreshes after a save
+  useEffect(() => { setHomeInput(match.home_score?.toString() ?? '') },     [match.home_score])
+  useEffect(() => { setAwayInput(match.away_score?.toString() ?? '') },     [match.away_score])
+  useEffect(() => { setExtraTime(match.extra_time_or_penalties) },          [match.extra_time_or_penalties])
+  useEffect(() => { setPenaltyWinner(match.penalty_winner ?? null) },       [match.penalty_winner])
 
   const isAdmin = role === 'admin'
   const teamsAssigned = !!homeTeam && !!awayTeam
 
+  const homeVal = parseInt(homeInput)
+  const awayVal = parseInt(awayInput)
+  const isDraw  = !isNaN(homeVal) && !isNaN(awayVal) && homeVal === awayVal
+  // Show penalty picker only when AET is ticked and scores are equal
+  const showPenaltyPicker = isAdmin && extraTime && isDraw && homeInput !== '' && awayInput !== ''
+
+  // Clear penalty winner whenever the draw condition no longer holds
+  useEffect(() => {
+    if (!showPenaltyPicker) setPenaltyWinner(null)
+  }, [showPenaltyPicker])
+
   async function handleSave() {
     const h = parseInt(homeInput), a = parseInt(awayInput)
     if (isNaN(h) || isNaN(a) || h < 0 || a < 0) return
+    // Penalties require a winner to be selected
+    const needsPenWinner = extraTime && h === a
+    if (needsPenWinner && !penaltyWinner) return
     setSaving(true)
     try {
       await saveScore.mutateAsync({
-        matchId: match.id,
-        homeTeamId: homeTeam?.id ?? null,
-        awayTeamId: awayTeam?.id ?? null,
-        homeScore: h,
-        awayScore: a,
+        matchId:      match.id,
+        homeTeamId:   homeTeam?.id ?? null,
+        awayTeamId:   awayTeam?.id ?? null,
+        homeScore:    h,
+        awayScore:    a,
         extraTime,
-        completed: true,
+        penaltyWinner: needsPenWinner ? penaltyWinner : null,
+        completed:    true,
       })
     } finally {
       setSaving(false)
@@ -120,8 +143,11 @@ export default function KnockoutMatchCard({ match, homeTeam, awayTeam }: Props) 
           <span className="text-xs text-slate-400 font-medium">{match.match_time}</span>
         </div>
         <div className="flex items-center gap-2">
-          {match.extra_time_or_penalties && match.completed && (
-            <span className="text-[11px] font-bold text-amber-400 bg-amber-500/20 px-1.5 py-px rounded-md">AET/P</span>
+          {match.penalty_winner && match.completed && (
+            <span className="text-[11px] font-bold text-violet-400 bg-violet-500/20 px-1.5 py-px rounded-md">PENS</span>
+          )}
+          {match.extra_time_or_penalties && match.completed && !match.penalty_winner && (
+            <span className="text-[11px] font-bold text-amber-400 bg-amber-500/20 px-1.5 py-px rounded-md">AET</span>
           )}
           {match.completed && (
             <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-400 bg-emerald-500/20 px-1.5 py-px rounded-md">
@@ -164,6 +190,52 @@ export default function KnockoutMatchCard({ match, homeTeam, awayTeam }: Props) 
         <SlotSide team={awayTeam} slot={match.away_slot} side="away" />
       </div>
 
+      {/* Penalty winner picker — appears when AET + draw */}
+      {showPenaltyPicker && (
+        <div className="px-4 pb-3 border-t border-white/10 pt-3">
+          <p className="text-[11px] text-slate-400 font-semibold uppercase tracking-wide mb-2 text-center">
+            Penalty Shootout Winner
+          </p>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setPenaltyWinner('home')}
+              className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all border ${
+                penaltyWinner === 'home'
+                  ? 'bg-violet-500 border-violet-400 text-white shadow-md shadow-violet-500/30'
+                  : 'bg-white/5 border-white/15 text-slate-400 hover:border-violet-500/50 hover:text-white'
+              }`}
+            >
+              {homeTeam?.team_name ?? 'Home'}
+            </button>
+            <button
+              onClick={() => setPenaltyWinner('away')}
+              className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all border ${
+                penaltyWinner === 'away'
+                  ? 'bg-violet-500 border-violet-400 text-white shadow-md shadow-violet-500/30'
+                  : 'bg-white/5 border-white/15 text-slate-400 hover:border-violet-500/50 hover:text-white'
+              }`}
+            >
+              {awayTeam?.team_name ?? 'Away'}
+            </button>
+          </div>
+          {!penaltyWinner && (
+            <p className="text-[10px] text-amber-500/70 text-center mt-1.5">Select the penalty winner to save</p>
+          )}
+        </div>
+      )}
+
+      {/* Completed penalty result display for non-admins */}
+      {!isAdmin && match.completed && match.penalty_winner && (
+        <div className="px-4 pb-3 border-t border-white/10 pt-2.5 text-center">
+          <p className="text-xs text-slate-400">
+            Won on penalties:{' '}
+            <span className="text-violet-300 font-semibold">
+              {match.penalty_winner === 'home' ? homeTeam?.team_name ?? 'Home' : awayTeam?.team_name ?? 'Away'}
+            </span>
+          </p>
+        </div>
+      )}
+
       {/* Footer */}
       {(match.venue || isAdmin) && (
         <div className="flex items-center justify-between gap-3 px-4 pb-3.5 pt-1 border-t border-white/10">
@@ -192,7 +264,8 @@ export default function KnockoutMatchCard({ match, homeTeam, awayTeam }: Props) 
                 AET/P
               </label>
               <button
-                onClick={handleSave} disabled={saving}
+                onClick={handleSave}
+                disabled={saving || (showPenaltyPicker && !penaltyWinner)}
                 className="px-4 py-1.5 bg-[#D4AF37] hover:bg-[#C4A027] disabled:opacity-40 text-[#071A3D] text-xs font-bold rounded-xl transition-all shadow-sm hover:shadow-md"
               >
                 {saving ? 'Saving…' : match.completed ? 'Update' : 'Save'}
