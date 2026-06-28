@@ -52,96 +52,96 @@ export default function StandingsPage() {
         ))}
       </div>
 
-      {/* Table */}
-      <div className="glass-card overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-white/10 bg-white/5 text-slate-400 text-[11px] uppercase tracking-widest font-semibold">
-                <th className="text-left px-4 py-3.5">#</th>
-                <th className="text-left px-4 py-3.5">Team</th>
-                <th className="text-center px-3 py-3.5">Grp</th>
-                <th className="text-center px-3 py-3.5">Pot</th>
-                <th className="text-center px-3 py-3.5">Owner</th>
-                <th className="text-center px-3 py-3.5">P</th>
-                <th className="text-center px-3 py-3.5 hidden sm:table-cell">Match Pts</th>
-                <th className="text-center px-3 py-3.5 hidden sm:table-cell">Round Pts</th>
-                <th className="text-center px-3 py-3.5">Total Pts</th>
-                <th className="text-center px-3 py-3.5 hidden md:table-cell">GS</th>
-                <th className="text-center px-3 py-3.5 hidden md:table-cell">GC</th>
-                <th className="text-center px-3 py-3.5">GD</th>
-                <th className="text-center px-3 py-3.5 hidden lg:table-cell">Pts/G</th>
+      {/* Table — overflow-x-auto on the card itself clips corners AND enables touch scroll */}
+      <div className="glass-card overflow-x-auto">
+        <table className="w-full min-w-[860px] text-sm">
+          <thead>
+            <tr className="border-b border-white/10 bg-white/5 text-slate-400 text-[11px] uppercase tracking-widest font-semibold">
+              <th className="text-left px-4 py-3.5 whitespace-nowrap">#</th>
+              <th className="text-left px-4 py-3.5 whitespace-nowrap">Team</th>
+              <th className="text-center px-3 py-3.5 whitespace-nowrap">Grp</th>
+              <th className="text-center px-3 py-3.5 whitespace-nowrap">Pot</th>
+              <th className="text-center px-3 py-3.5 whitespace-nowrap">Owner</th>
+              <th className="text-center px-3 py-3.5 whitespace-nowrap">P</th>
+              <th className="text-center px-3 py-3.5 whitespace-nowrap">Match Pts</th>
+              <th className="text-center px-3 py-3.5 whitespace-nowrap">Round Pts</th>
+              <th className="text-center px-3 py-3.5 whitespace-nowrap">Total Pts</th>
+              <th className="text-center px-3 py-3.5 whitespace-nowrap">GS</th>
+              <th className="text-center px-3 py-3.5 whitespace-nowrap">GC</th>
+              <th className="text-center px-3 py-3.5 whitespace-nowrap">GD</th>
+              <th className="text-center px-3 py-3.5 whitespace-nowrap">Pts/G</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((t, i) => (
+              <tr
+                key={t.teamId}
+                className="border-b border-white/10 hover:bg-white/5 transition-colors"
+              >
+                <td className="px-4 py-3">
+                  <span className={`inline-flex w-6 h-6 rounded-md items-center justify-center text-xs font-bold ${
+                    i === 0 ? 'bg-[#D4AF37]/20 text-[#D4AF37]' :
+                    i === 1 ? 'bg-white/10 text-slate-300' :
+                    i === 2 ? 'bg-orange-500/20 text-orange-400' :
+                    'text-slate-500'
+                  }`}>
+                    {i + 1}
+                  </span>
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <Link to={`/teams/${t.teamId}`} className="font-semibold text-white hover:text-[#D4AF37] transition-colors inline-flex items-center gap-2">
+                    <FlagImg teamName={t.teamName} size={18} />
+                    {t.teamName}
+                  </Link>
+                </td>
+                <td className="px-3 py-3 text-center text-slate-400 text-xs font-medium whitespace-nowrap">{t.groupName ?? '—'}</td>
+                <td className="px-3 py-3 text-center whitespace-nowrap">
+                  <span className="text-[11px] bg-white/10 text-slate-300 px-1.5 py-0.5 rounded-md font-semibold">
+                    P{t.potNumber}
+                  </span>
+                </td>
+                <td className="px-3 py-3 text-center whitespace-nowrap">
+                  <Link to={`/owners/${t.ownerId}`} className="text-slate-400 hover:text-[#D4AF37] text-xs font-medium transition-colors">
+                    {t.ownerName}
+                  </Link>
+                </td>
+                <td className="px-3 py-3 text-center text-slate-300 text-sm tabular-nums whitespace-nowrap">{t.gamesPlayed}</td>
+                <td className="px-3 py-3 text-center text-slate-300 text-sm tabular-nums whitespace-nowrap">
+                  {t.matchPoints.toFixed(2)}
+                </td>
+                <td className="px-3 py-3 text-center whitespace-nowrap">
+                  <span className={`text-sm font-semibold tabular-nums ${t.roundPoints > 0 ? 'text-amber-400' : 'text-white/20'}`}>
+                    {t.roundPoints}
+                  </span>
+                </td>
+                <td className="px-3 py-3 text-center whitespace-nowrap">
+                  <span className="font-bold text-[#D4AF37] tabular-nums">{t.totalPoints.toFixed(2)}</span>
+                </td>
+                <td className="px-3 py-3 text-center text-slate-300 text-sm tabular-nums whitespace-nowrap">{t.goalsScored}</td>
+                <td className="px-3 py-3 text-center text-slate-300 text-sm tabular-nums whitespace-nowrap">{t.goalsConceded}</td>
+                <td className="px-3 py-3 text-center whitespace-nowrap">
+                  <span className={`font-semibold text-sm tabular-nums ${
+                    t.goalDifference > 0 ? 'text-emerald-400' :
+                    t.goalDifference < 0 ? 'text-red-400' :
+                    'text-slate-500'
+                  }`}>
+                    {t.goalDifference > 0 ? '+' : ''}{t.goalDifference}
+                  </span>
+                </td>
+                <td className="px-3 py-3 text-center text-emerald-400 text-sm tabular-nums whitespace-nowrap">
+                  {t.gamesPlayed > 0 ? (t.totalPoints / t.gamesPlayed).toFixed(2) : '—'}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {filtered.map((t, i) => (
-                <tr
-                  key={t.teamId}
-                  className="border-b border-white/10 hover:bg-white/5 transition-colors"
-                >
-                  <td className="px-4 py-3">
-                    <span className={`inline-flex w-6 h-6 rounded-md items-center justify-center text-xs font-bold ${
-                      i === 0 ? 'bg-[#D4AF37]/20 text-[#D4AF37]' :
-                      i === 1 ? 'bg-white/10 text-slate-300' :
-                      i === 2 ? 'bg-orange-500/20 text-orange-400' :
-                      'text-slate-500'
-                    }`}>
-                      {i + 1}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <Link to={`/teams/${t.teamId}`} className="font-semibold text-white hover:text-[#D4AF37] transition-colors inline-flex items-center gap-2">
-                      <FlagImg teamName={t.teamName} size={18} />
-                      {t.teamName}
-                    </Link>
-                  </td>
-                  <td className="px-3 py-3 text-center text-slate-400 text-xs font-medium">{t.groupName ?? '—'}</td>
-                  <td className="px-3 py-3 text-center">
-                    <span className="text-[11px] bg-white/10 text-slate-300 px-1.5 py-0.5 rounded-md font-semibold">
-                      P{t.potNumber}
-                    </span>
-                  </td>
-                  <td className="px-3 py-3 text-center">
-                    <Link to={`/owners/${t.ownerId}`} className="text-slate-400 hover:text-[#D4AF37] text-xs font-medium transition-colors">
-                      {t.ownerName}
-                    </Link>
-                  </td>
-                  <td className="px-3 py-3 text-center text-slate-300 text-sm tabular-nums">{t.gamesPlayed}</td>
-                  <td className="px-3 py-3 text-center text-slate-300 text-sm hidden sm:table-cell tabular-nums">
-                    {t.matchPoints.toFixed(2)}
-                  </td>
-                  <td className="px-3 py-3 text-center hidden sm:table-cell">
-                    <span className={`text-sm font-semibold tabular-nums ${t.roundPoints > 0 ? 'text-amber-400' : 'text-white/20'}`}>
-                      {t.roundPoints}
-                    </span>
-                  </td>
-                  <td className="px-3 py-3 text-center">
-                    <span className="font-bold text-[#D4AF37] tabular-nums">{t.totalPoints.toFixed(2)}</span>
-                  </td>
-                  <td className="px-3 py-3 text-center text-slate-300 text-sm hidden md:table-cell tabular-nums">{t.goalsScored}</td>
-                  <td className="px-3 py-3 text-center text-slate-300 text-sm hidden md:table-cell tabular-nums">{t.goalsConceded}</td>
-                  <td className="px-3 py-3 text-center">
-                    <span className={`font-semibold text-sm tabular-nums ${
-                      t.goalDifference > 0 ? 'text-emerald-400' :
-                      t.goalDifference < 0 ? 'text-red-400' :
-                      'text-slate-500'
-                    }`}>
-                      {t.goalDifference > 0 ? '+' : ''}{t.goalDifference}
-                    </span>
-                  </td>
-                  <td className="px-3 py-3 text-center text-emerald-400 text-sm hidden lg:table-cell tabular-nums">
-                    {t.gamesPlayed > 0 ? (t.totalPoints / t.gamesPlayed).toFixed(2) : '—'}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
 
         {filtered.length === 0 && (
           <div className="text-center py-14 text-slate-400">No standings data yet</div>
         )}
       </div>
+
+      <p className="mt-3 text-[10px] text-slate-600 sm:hidden">← Scroll left/right to see all columns</p>
 
       {/* Legend */}
       <div className="mt-4 flex gap-5 flex-wrap text-xs text-slate-500">
