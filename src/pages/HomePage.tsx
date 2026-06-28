@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Calendar, BarChart3, Users, GitBranch, TrendingUp, Target, Zap } from 'lucide-react'
 import { useAllMatchesForStats, useComputedStats } from '../hooks/useStats'
+import { useBracketSlots } from '../hooks/useBracket'
+import type { Team } from '../types'
 import LoadingSpinner from '../components/LoadingSpinner'
 import FlagImg from '../components/FlagImg'
 import { format, parseISO } from 'date-fns'
@@ -45,8 +47,16 @@ function toMinutes(time: string): number {
 export default function HomePage() {
   const { data: matches = [], isLoading: matchLoading } = useAllMatchesForStats()
   const { ownerStats, isLoading: statsLoading } = useComputedStats()
+  const { data: slots = [] } = useBracketSlots()
+
+  const slotMap = useMemo(() => {
+    const m = new Map<number, Team>()
+    for (const s of slots) if (s.team) m.set(s.slot_number, s.team)
+    return m
+  }, [slots])
 
   const groupMatches = matches.filter(m => m.stage === 'group')
+  const knockoutMatches = matches.filter(m => m.stage !== 'group')
   const completedMatches = matches.filter(m => m.completed).length
   const totalGoals = matches.filter(m => m.completed).reduce((s, m) => s + (m.home_score ?? 0) + (m.away_score ?? 0), 0)
 
@@ -79,10 +89,19 @@ export default function HomePage() {
     .sort((a, b) => b.match_date.localeCompare(a.match_date) || toMinutes(b.match_time) - toMinutes(a.match_time))
     .slice(0, 5)
 
-  const upcoming = groupMatches
-    .filter(m => !m.completed)
+  // Fall back to knockout fixtures once all group matches are done
+  const upcomingGroup = groupMatches.filter(m => !m.completed)
+  const upcoming = (upcomingGroup.length > 0 ? upcomingGroup : knockoutMatches.filter(m => !m.completed))
     .sort((a, b) => a.match_date.localeCompare(b.match_date) || toMinutes(a.match_time) - toMinutes(b.match_time))
     .slice(0, 5)
+
+  const STAGE_SHORT: Record<string, string> = {
+    round_of_32: 'R32', round_of_16: 'R16', quarterfinal: 'QF', semifinal: 'SF', final: 'Final',
+  }
+  const matchLabel = (m: typeof upcoming[0]) =>
+    m.stage === 'group' ? `Grp ${m.group_name ?? ''}` : (STAGE_SHORT[m.stage] ?? m.stage)
+
+  const slotName = (slot: number | null) => slot ? (slotMap.get(slot)?.team_name ?? `Slot ${slot}`) : 'TBD'
 
   return (
     <div style={{ background: '#04102A', position: 'relative' }}>
@@ -337,24 +356,41 @@ export default function HomePage() {
                 </h2>
               </div>
               <div className="space-y-0.5">
-                {upcoming.map(m => (
-                  <div key={m.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors">
-                    <div className="flex-1 flex justify-end items-center gap-1.5 min-w-0">
-                      <p className="text-sm font-semibold text-white truncate">{m.home_team?.team_name}</p>
-                      <FlagImg teamName={m.home_team?.team_name ?? ''} size={18} />
+                {upcoming.map(m => {
+                  const homeTeam  = m.home_team ?? (m.home_slot ? slotMap.get(m.home_slot) ?? null : null)
+                  const awayTeam  = m.away_team ?? (m.away_slot ? slotMap.get(m.away_slot) ?? null : null)
+                  const homeName  = homeTeam?.team_name ?? slotName(m.home_slot)
+                  const awayName  = awayTeam?.team_name ?? slotName(m.away_slot)
+                  const homeOwner = homeTeam?.owner?.name ?? null
+                  const awayOwner = awayTeam?.owner?.name ?? null
+                  const homeKnown = !!homeTeam?.team_name
+                  const awayKnown = !!awayTeam?.team_name
+                  return (
+                    <div key={m.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors">
+                      <div className="flex-1 flex justify-end items-center gap-1.5 min-w-0">
+                        <div className="text-right min-w-0">
+                          <p className={`text-sm font-semibold truncate ${homeKnown ? 'text-white' : 'text-slate-500'}`}>{homeName}</p>
+                          {homeOwner && <p className="text-xs text-slate-400 truncate">{homeOwner}</p>}
+                        </div>
+                        {homeKnown && <FlagImg teamName={homeName} size={18} />}
+                      </div>
+                      <div className="text-center flex-shrink-0 min-w-[80px]">
+                        <p className="text-[#D4AF37] text-xs font-semibold">{format(parseISO(m.match_date), 'MMM d')}</p>
+                        <p className="text-slate-400 text-[10px] font-medium">{m.match_time}</p>
+                        <p className="text-slate-600 text-[10px]">{matchLabel(m)}</p>
+                      </div>
+                      <div className="flex-1 flex items-center gap-1.5 min-w-0">
+                        {awayKnown && <FlagImg teamName={awayName} size={18} />}
+                        <div className="min-w-0">
+                          <p className={`text-sm font-semibold truncate ${awayKnown ? 'text-white' : 'text-slate-500'}`}>{awayName}</p>
+                          {awayOwner && <p className="text-xs text-slate-400 truncate">{awayOwner}</p>}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-center flex-shrink-0 min-w-[72px]">
-                      <p className="text-[#D4AF37] text-xs font-semibold">{format(parseISO(m.match_date), 'MMM d')}</p>
-                      <p className="text-slate-500 text-[10px]">{m.match_time}</p>
-                    </div>
-                    <div className="flex-1 flex items-center gap-1.5 min-w-0">
-                      <FlagImg teamName={m.away_team?.team_name ?? ''} size={18} />
-                      <p className="text-sm font-semibold text-white truncate">{m.away_team?.team_name}</p>
-                    </div>
-                  </div>
-                ))}
+                  )
+                })}
                 {!upcoming.length && (
-                  <p className="text-slate-500 text-sm text-center py-5">All group matches played</p>
+                  <p className="text-slate-500 text-sm text-center py-5">No upcoming fixtures</p>
                 )}
               </div>
             </div>

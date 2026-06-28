@@ -39,11 +39,14 @@ export default function SearchPage() {
 
       {/* Search input */}
       <div className="relative mb-8">
-        <Search size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+        {/* Icon sits in its own flex container so it never overlaps the input background */}
+        <span className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+          <Search size={17} className="text-slate-400 flex-shrink-0" />
+        </span>
         <input
           type="text" value={query} onChange={e => setQuery(e.target.value)}
           placeholder="Teams, owners, venues…" autoFocus
-          className="w-full bg-white/10 border border-white/20 rounded-2xl pl-11 pr-4 py-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20 transition-all text-[15px] font-medium"
+          className="w-full bg-white/10 border border-white/20 rounded-2xl pl-12 pr-4 py-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20 transition-all text-[15px] font-medium"
         />
       </div>
 
