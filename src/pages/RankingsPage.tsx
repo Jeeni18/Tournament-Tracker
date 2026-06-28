@@ -28,19 +28,19 @@ export default function RankingsPage() {
 
       {/* overflow-x-auto on the card itself clips to border-radius AND enables touch scroll */}
       <div className="glass-card overflow-x-auto">
-        <table className="w-full min-w-[720px] text-sm">
+        <table className="w-full min-w-[920px] text-sm">
           <thead>
             <tr className="border-b border-white/10 bg-white/5 text-slate-400 text-[11px] uppercase tracking-widest font-semibold">
               <th className="text-left px-4 py-3.5 whitespace-nowrap">#</th>
               <th className="text-left px-4 py-3.5 whitespace-nowrap">Owner</th>
-              <th className="text-center px-3 py-3.5 whitespace-nowrap">Played</th>
-              <th className="text-center px-3 py-3.5 whitespace-nowrap">Match Pts</th>
-              <th className="text-center px-3 py-3.5 whitespace-nowrap">Round Pts</th>
-              <th className="text-center px-3 py-3.5 whitespace-nowrap">Total Pts</th>
-              <th className="text-center px-3 py-3.5 whitespace-nowrap">GS</th>
-              <th className="text-center px-3 py-3.5 whitespace-nowrap">GC</th>
-              <th className="text-center px-3 py-3.5 whitespace-nowrap">GD</th>
-              <th className="text-center px-3 py-3.5 whitespace-nowrap">Pts/G</th>
+              <th className="text-center px-5 py-3.5 whitespace-nowrap">Played</th>
+              <th className="text-center px-5 py-3.5 whitespace-nowrap border-l border-white/10">Match Pts</th>
+              <th className="text-center px-5 py-3.5 whitespace-nowrap">Round Pts</th>
+              <th className="text-center px-5 py-3.5 whitespace-nowrap border-l border-white/10">Total Pts</th>
+              <th className="text-center px-5 py-3.5 whitespace-nowrap border-l border-white/10">GS</th>
+              <th className="text-center px-5 py-3.5 whitespace-nowrap">GC</th>
+              <th className="text-center px-5 py-3.5 whitespace-nowrap">GD</th>
+              <th className="text-center px-5 py-3.5 whitespace-nowrap border-l border-white/10">Pts/G</th>
             </tr>
           </thead>
           <tbody>
@@ -58,7 +58,7 @@ export default function RankingsPage() {
                       {i + 1}
                     </span>
                   </td>
-                  <td className="px-4 py-4 min-w-[160px]">
+                  <td className="px-4 py-4 min-w-[180px]">
                     <Link to={`/owners/${o.ownerId}`} className="font-bold text-white hover:text-[#D4AF37] transition-colors block whitespace-nowrap">
                       {o.ownerName}
                     </Link>
@@ -74,21 +74,21 @@ export default function RankingsPage() {
                       )}
                     </div>
                   </td>
-                  <td className="px-3 py-4 text-center text-slate-300 tabular-nums whitespace-nowrap">{o.gamesPlayed}</td>
-                  <td className="px-3 py-4 text-center text-slate-300 tabular-nums whitespace-nowrap">
+                  <td className="px-5 py-4 text-center text-slate-300 tabular-nums whitespace-nowrap">{o.gamesPlayed}</td>
+                  <td className="px-5 py-4 text-center text-slate-300 tabular-nums whitespace-nowrap border-l border-white/10">
                     {o.matchPoints.toFixed(2)}
                   </td>
-                  <td className="px-3 py-4 text-center whitespace-nowrap">
+                  <td className="px-5 py-4 text-center whitespace-nowrap">
                     <span className={`font-semibold tabular-nums ${o.roundPoints > 0 ? 'text-amber-400' : 'text-white/20'}`}>
                       {o.roundPoints}
                     </span>
                   </td>
-                  <td className="px-3 py-4 text-center whitespace-nowrap">
+                  <td className="px-5 py-4 text-center whitespace-nowrap border-l border-white/10">
                     <span className="font-bold text-[#D4AF37] tabular-nums">{o.totalPoints.toFixed(2)}</span>
                   </td>
-                  <td className="px-3 py-4 text-center text-slate-300 tabular-nums whitespace-nowrap">{o.goalsScored}</td>
-                  <td className="px-3 py-4 text-center text-slate-300 tabular-nums whitespace-nowrap">{o.goalsConceded}</td>
-                  <td className="px-3 py-4 text-center whitespace-nowrap">
+                  <td className="px-5 py-4 text-center text-slate-300 tabular-nums whitespace-nowrap border-l border-white/10">{o.goalsScored}</td>
+                  <td className="px-5 py-4 text-center text-slate-300 tabular-nums whitespace-nowrap">{o.goalsConceded}</td>
+                  <td className="px-5 py-4 text-center whitespace-nowrap">
                     <span className={`font-semibold tabular-nums ${
                       o.goalDifference > 0 ? 'text-emerald-400' :
                       o.goalDifference < 0 ? 'text-red-400' : 'text-slate-500'
@@ -96,7 +96,7 @@ export default function RankingsPage() {
                       {o.goalDifference > 0 ? '+' : ''}{o.goalDifference}
                     </span>
                   </td>
-                  <td className="px-3 py-4 text-center text-emerald-400 tabular-nums whitespace-nowrap">
+                  <td className="px-5 py-4 text-center text-emerald-400 tabular-nums whitespace-nowrap border-l border-white/10">
                     {o.gamesPlayed > 0 ? o.pointsPerGame.toFixed(2) : '—'}
                   </td>
                 </tr>
