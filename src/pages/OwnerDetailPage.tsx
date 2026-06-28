@@ -36,7 +36,7 @@ export default function OwnerDetailPage() {
   const ownerTeamIds   = new Set(ownerTeams.map(t => t.id))
 
   const ownerMatches = matches
-    .filter(m => m.completed && (ownerTeamIds.has(m.home_team_id) || ownerTeamIds.has(m.away_team_id)))
+    .filter(m => m.completed && ((m.home_team_id && ownerTeamIds.has(m.home_team_id)) || (m.away_team_id && ownerTeamIds.has(m.away_team_id))))
     .sort((a, b) => b.match_date.localeCompare(a.match_date) || toMinutes(b.match_time) - toMinutes(a.match_time))
     .slice(0, 8)
 
@@ -149,8 +149,8 @@ export default function OwnerDetailPage() {
           </h2>
           <div className="space-y-1.5">
             {ownerMatches.map(m => {
-              const homeOwned = ownerTeamIds.has(m.home_team_id)
-              const awayOwned = ownerTeamIds.has(m.away_team_id)
+              const homeOwned = !!m.home_team_id && ownerTeamIds.has(m.home_team_id)
+              const awayOwned = !!m.away_team_id && ownerTeamIds.has(m.away_team_id)
               return (
                 <div key={m.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-sm">
                   <div className="flex-1 flex justify-end items-center gap-1.5 min-w-0">
