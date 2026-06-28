@@ -106,17 +106,19 @@ export interface Match {
   group_name: string | null
   match_date: string
   match_time: string
-  venue: string
-  home_team_id: string
-  away_team_id: string
+  venue: string | null
+  home_team_id: string | null
+  away_team_id: string | null
+  home_slot: number | null
+  away_slot: number | null
   home_score: number | null
   away_score: number | null
   extra_time_or_penalties: boolean
   completed: boolean
   slot_number: number | null
   created_at: string
-  home_team?: Team
-  away_team?: Team
+  home_team?: Team | null
+  away_team?: Team | null
 }
 
 export interface OwnerRanking {

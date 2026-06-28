@@ -7,6 +7,23 @@ import FlagImg from '../components/FlagImg'
 import { format, parseISO } from 'date-fns'
 import worldCupImg from '../assets/World Cup.png'
 
+const GALAXY_STARS = Array.from({ length: 160 }, (_, i) => {
+  const size = Math.random() < 0.82
+    ? Math.random() * 1.2 + 0.3
+    : Math.random() * 1.6 + 1.4
+  return {
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size,
+    opacity: Math.random() * 0.45 + 0.12,
+    // only 30% of stars twinkle, and very slowly
+    twinkle: Math.random() < 0.3,
+    duration: Math.random() * 6 + 6,
+    delay: Math.random() * 10,
+  }
+})
+
 const NAV_CARDS = [
   { to: '/fixtures',  label: 'Fixtures',  desc: 'Group stage schedule',   icon: Calendar,  grad: 'from-blue-500 to-blue-700',      glow: 'shadow-blue-500/25'     },
   { to: '/standings', label: 'Standings', desc: 'Team league table',      icon: BarChart3, grad: 'from-emerald-500 to-emerald-700', glow: 'shadow-emerald-500/25'  },
@@ -68,19 +85,50 @@ export default function HomePage() {
     .slice(0, 5)
 
   return (
-    <>
+    <div style={{ background: '#04102A', position: 'relative' }}>
+
+      {/* ── Fixed galaxy — visible behind the entire page ── */}
+      <style>{`
+        @keyframes starFade {
+          0%, 100% { opacity: var(--s-op); }
+          50%       { opacity: calc(var(--s-op) * 0.2); }
+        }
+      `}</style>
+      <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', overflow:'hidden' }}>
+        {/* Nebula clouds */}
+        <div style={{ position:'absolute', top:'-5%',  left:'-8%',  width:600, height:500, borderRadius:'50%', background:'rgba(40,55,160,0.18)', filter:'blur(140px)' }} />
+        <div style={{ position:'absolute', bottom:'-10%', right:'-5%', width:520, height:460, borderRadius:'50%', background:'rgba(55,35,140,0.14)', filter:'blur(130px)' }} />
+        <div style={{ position:'absolute', top:'55%',  left:'60%',  width:420, height:380, borderRadius:'50%', background:'rgba(30,45,130,0.12)', filter:'blur(120px)' }} />
+        <div style={{ position:'absolute', top:'30%',  left:'-5%',  width:380, height:340, borderRadius:'50%', background:'rgba(50,30,120,0.11)', filter:'blur(110px)' }} />
+        {/* Gold halo stays centred (roughly where the trophy sits in the viewport) */}
+        <div style={{ position:'absolute', top:'30%', left:'50%', transform:'translate(-50%,-50%)', width:380, height:380, borderRadius:'50%', background:'radial-gradient(circle, rgba(212,175,55,0.09) 0%, transparent 70%)', filter:'blur(50px)' }} />
+        {/* Stars */}
+        {GALAXY_STARS.map(s => (
+          <div
+            key={s.id}
+            style={{
+              position: 'absolute',
+              left: `${s.x}%`,
+              top: `${s.y}%`,
+              width: s.size,
+              height: s.size,
+              borderRadius: '50%',
+              background: '#ffffff',
+              ['--s-op' as string]: s.opacity,
+              opacity: s.opacity,
+              animation: s.twinkle ? `starFade ${s.duration}s ${s.delay}s ease-in-out infinite` : 'none',
+            }}
+          />
+        ))}
+      </div>
+
       {/* ──────────────── HERO ──────────────── */}
       <section
         className="relative min-h-[94vh] flex flex-col items-center justify-center overflow-hidden"
-        style={{ background: 'linear-gradient(150deg, #071A3D 0%, #0E2A5A 55%, #071A3D 100%)' }}
+        style={{ zIndex: 1 }}
       >
-        {/* Grid overlay */}
+        {/* Grid overlay — hero only */}
         <div className="absolute inset-0 hero-grid pointer-events-none" />
-
-        {/* Ambient glows */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#D4AF37]/8 blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-72 h-72 rounded-full bg-[#0E2A5A]/80 blur-[90px] pointer-events-none" />
-        <div className="absolute top-16 left-1/4 w-52 h-52 rounded-full bg-blue-500/8 blur-[70px] pointer-events-none" />
 
         {/* Trophy */}
         <div className="trophy-float mb-8 sm:mb-10 relative z-10 animate-fade-up">
@@ -128,7 +176,7 @@ export default function HomePage() {
       </section>
 
       {/* ──────────────── CONTENT ──────────────── */}
-      <div className="bg-[#071A3D]">
+      <div style={{ position: 'relative', zIndex: 1 }}>
 
         {/* Stats Carousel */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-4 flex flex-col items-center">
@@ -314,6 +362,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }

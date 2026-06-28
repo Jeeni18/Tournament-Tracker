@@ -105,6 +105,29 @@ export async function searchTeams(query: string): Promise<Team[]> {
   return data || []
 }
 
+export async function saveKnockoutScore(
+  matchId: string,
+  homeTeamId: string | null,
+  awayTeamId: string | null,
+  homeScore: number,
+  awayScore: number,
+  extraTimeOrPenalties: boolean,
+  completed: boolean
+): Promise<void> {
+  const { error } = await supabase
+    .from('matches')
+    .update({
+      home_team_id: homeTeamId,
+      away_team_id: awayTeamId,
+      home_score: homeScore,
+      away_score: awayScore,
+      extra_time_or_penalties: extraTimeOrPenalties,
+      completed,
+    })
+    .eq('id', matchId)
+  if (error) throw error
+}
+
 export async function updateTeamAdvancement(
   teamId: string,
   flags: Partial<Pick<Team, 'round_of_32' | 'round_of_16' | 'quarterfinal' | 'semifinal' | 'final_round' | 'winner'>>
