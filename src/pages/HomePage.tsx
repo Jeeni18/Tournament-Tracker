@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { Calendar, BarChart3, Users, GitBranch, TrendingUp, Target, Zap, ChevronDown } from 'lucide-react'
+import { Calendar, BarChart3, Users, GitBranch, TrendingUp, Target, Zap } from 'lucide-react'
 import { useAllMatchesForStats, useComputedStats } from '../hooks/useStats'
 import LoadingSpinner from '../components/LoadingSpinner'
 import FlagImg from '../components/FlagImg'
@@ -105,7 +105,7 @@ export default function HomePage() {
         <div className="z-10 text-center mt-5 px-6 animate-fade-up-d2">
           <p className="text-[#D4AF37] font-bold text-base sm:text-lg">FIFA World Cup 2026</p>
           <p className="text-white/30 text-sm mt-2 max-w-xs mx-auto leading-relaxed">
-            48 teams · 8 owners · 134 matches · One champion
+            48 teams · 8 owners · 104 matches · One champion
           </p>
         </div>
 
@@ -125,13 +125,6 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 z-10 flex flex-col items-center gap-2 animate-fade-up-d3">
-          <p className="text-white/25 text-[10px] font-semibold tracking-[0.2em] uppercase">Scroll</p>
-          <div className="scroll-bounce text-white/25">
-            <ChevronDown size={20} />
-          </div>
-        </div>
       </section>
 
       {/* ──────────────── CONTENT ──────────────── */}

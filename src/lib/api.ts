@@ -1,5 +1,6 @@
 import { supabase } from './supabase'
 import type { Match, Team, Owner, OwnerRanking, BracketSlot } from '../types'
+import type { OwnerStats } from '../hooks/useStats'
 
 export async function getOwners(): Promise<Owner[]> {
   const { data, error } = await supabase.from('owners').select('*').order('name')
@@ -109,6 +110,25 @@ export async function updateTeamAdvancement(
   flags: Partial<Pick<Team, 'round_of_32' | 'round_of_16' | 'quarterfinal' | 'semifinal' | 'final_round' | 'winner'>>
 ): Promise<void> {
   const { error } = await supabase.from('teams').update(flags).eq('id', teamId)
+  if (error) throw error
+}
+
+export async function upsertOwnerRankings(stats: OwnerStats[]): Promise<void> {
+  const rows = stats.map(o => ({
+    owner_id:       o.ownerId,
+    total_points:   o.totalPoints,
+    match_points:   o.matchPoints,
+    round_points:   o.roundPoints,
+    goal_difference: o.goalDifference,
+    goals_scored:   o.goalsScored,
+    goals_conceded: o.goalsConceded,
+    games_played:   o.gamesPlayed,
+    points_per_game: o.pointsPerGame,
+    updated_at:     new Date().toISOString(),
+  }))
+  const { error } = await supabase
+    .from('owner_rankings')
+    .upsert(rows, { onConflict: 'owner_id' })
   if (error) throw error
 }
 

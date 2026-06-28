@@ -1,6 +1,6 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { getAllMatches } from '../lib/api'
+import { getAllMatches, upsertOwnerRankings } from '../lib/api'
 import { useTeams } from './useTeams'
 import { calculateGroupMatchPoints, calculateKnockoutMatchPoints } from '../utils/calculations'
 
@@ -139,15 +139,18 @@ export function useComputedStats() {
         goalDifference: o.goalsScored - o.goalsConceded,
         totalPoints:    Math.round((o.matchPoints + o.roundPoints) * 100) / 100,
         pointsPerGame:  o.gamesPlayed > 0
-          ? Math.round(((o.matchPoints + o.roundPoints) / o.gamesPlayed) * 100) / 100
+          ? Math.round((o.matchPoints / o.gamesPlayed) * 100) / 100
           : 0,
       }))
       .sort((a, b) => b.totalPoints - a.totalPoints || b.goalDifference - a.goalDifference || b.goalsScored - a.goalsScored)
   }, [teamStats])
 
-  return {
-    teamStats,
-    ownerStats,
-    isLoading: matchesLoading || teamsLoading,
-  }
+  const isLoading = matchesLoading || teamsLoading
+
+  useEffect(() => {
+    if (isLoading || ownerStats.length === 0) return
+    upsertOwnerRankings(ownerStats).catch(console.error)
+  }, [ownerStats, isLoading])
+
+  return { teamStats, ownerStats, isLoading }
 }
