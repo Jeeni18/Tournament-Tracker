@@ -129,7 +129,7 @@ export default function StandingsPage() {
                   </span>
                 </td>
                 <td className="px-3 py-3 text-center text-emerald-400 text-sm tabular-nums whitespace-nowrap">
-                  {t.gamesPlayed > 0 ? (t.totalPoints / t.gamesPlayed).toFixed(2) : '—'}
+                  {t.gamesPlayed > 0 ? (t.matchPoints / t.gamesPlayed).toFixed(2) : '—'}
                 </td>
               </tr>
             ))}

@@ -63,15 +63,12 @@ export default function RankingsPage() {
                       {o.ownerName}
                     </Link>
                     <div className="flex flex-wrap gap-1 mt-1.5">
-                      {ownerTeams.slice(0, 5).map(t => (
+                      {ownerTeams.map(t => (
                         <span key={t.id} className="inline-flex items-center gap-1 text-[10px] bg-white/10 text-slate-400 px-1.5 py-0.5 rounded-md font-medium whitespace-nowrap">
                           <FlagImg teamName={t.team_name} size={12} />
                           {t.team_name}
                         </span>
                       ))}
-                      {ownerTeams.length > 5 && (
-                        <span className="text-[10px] text-slate-500">+{ownerTeams.length - 5}</span>
-                      )}
                     </div>
                   </td>
                   <td className="px-5 py-4 text-center text-slate-300 tabular-nums whitespace-nowrap">{o.gamesPlayed}</td>

@@ -47,7 +47,7 @@ export default function OwnerDetailPage() {
   const totalGD       = ownerStat?.goalDifference ?? 0
   const totalGoals    = ownerStat?.goalsScored    ?? 0
   const totalConceded = ownerStat?.goalsConceded  ?? 0
-  const ppg           = gamesPlayed > 0 ? (totalPoints / gamesPlayed).toFixed(2) : '—'
+  const ppg           = gamesPlayed > 0 ? (matchPoints / gamesPlayed).toFixed(2) : '—'
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">

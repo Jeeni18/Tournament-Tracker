@@ -105,6 +105,20 @@ export async function searchTeams(query: string): Promise<Team[]> {
   return data || []
 }
 
+export async function clearKnockoutScore(matchId: string): Promise<void> {
+  const { error } = await supabase
+    .from('matches')
+    .update({
+      home_score: null,
+      away_score: null,
+      extra_time_or_penalties: false,
+      penalty_winner: null,
+      completed: false,
+    })
+    .eq('id', matchId)
+  if (error) throw error
+}
+
 export async function saveKnockoutScore(
   matchId: string,
   homeTeamId: string | null,

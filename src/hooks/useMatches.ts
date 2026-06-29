@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getAllMatches, getGroupMatches, getKnockoutMatches, updateMatchScore, saveKnockoutScore } from '../lib/api'
+import { getAllMatches, getGroupMatches, getKnockoutMatches, updateMatchScore, saveKnockoutScore, clearKnockoutScore } from '../lib/api'
 
 // Single shared query for ALL matches — the source of truth for all computed stats
 export function useAllMatches() {
@@ -41,6 +41,14 @@ export function useSaveKnockoutScore() {
       penaltyWinner: 'home' | 'away' | null
       completed: boolean
     }) => saveKnockoutScore(matchId, homeTeamId, awayTeamId, homeScore, awayScore, extraTime, penaltyWinner, completed),
+    onSuccess: () => qc.invalidateQueries(),
+  })
+}
+
+export function useClearKnockoutScore() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (matchId: string) => clearKnockoutScore(matchId),
     onSuccess: () => qc.invalidateQueries(),
   })
 }

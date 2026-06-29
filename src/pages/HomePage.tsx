@@ -84,7 +84,7 @@ export default function HomePage() {
     return () => clearInterval(id)
   }, [])
 
-  const recentResults = groupMatches
+  const recentResults = matches
     .filter(m => m.completed)
     .sort((a, b) => b.match_date.localeCompare(a.match_date) || toMinutes(b.match_time) - toMinutes(a.match_time))
     .slice(0, 5)
@@ -179,10 +179,10 @@ export default function HomePage() {
         {/* CTAs */}
         <div className="z-10 flex items-center gap-3 mt-8 px-6 flex-wrap justify-center animate-fade-up-d2">
           <Link
-            to="/standings"
+            to="/rankings"
             className="px-7 py-3 bg-[#D4AF37] text-[#071A3D] rounded-2xl font-bold text-sm hover:bg-[#C4A027] transition-all shadow-xl shadow-[#D4AF37]/25 hover:-translate-y-0.5"
           >
-            View Standings
+            View Rankings
           </Link>
           <Link
             to="/fixtures"
@@ -329,7 +329,7 @@ export default function HomePage() {
                       </div>
                       <div className="text-center flex-shrink-0 min-w-[64px]">
                         <p className="text-white font-bold text-sm tabular-nums">{m.home_score} — {m.away_score}</p>
-                        <p className="text-slate-500 text-[10px]">Grp {m.group_name}</p>
+                        <p className="text-slate-500 text-[10px]">{matchLabel(m)}</p>
                       </div>
                       <div className="flex-1 flex items-center gap-1.5 min-w-0">
                         <FlagImg teamName={m.away_team?.team_name ?? ''} size={18} />
