@@ -397,6 +397,16 @@ export default function HomePage() {
 
           </div>
         </div>
+        {/* Footer credit */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-10 text-center">
+          <p className="text-slate-600 text-xs font-medium">
+            Designed &amp; Developed by{' '}
+            <span className="text-slate-400 font-semibold">Jeeni</span>
+            {' '}&amp;{' '}
+            <span className="text-slate-400 font-semibold">Achal</span>
+          </p>
+        </div>
+
       </div>
     </div>
   )
